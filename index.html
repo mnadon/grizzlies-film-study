@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grizzlies film study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A2240;
+  --blue:#1B4F8C;
+  --green:#7AB800;
+  --green-ink:#4E7A00;
+  --bg:#EEF2F6;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8FB;
+  --line:#D5DDE7;
+  --text:#0F1E33;
+  --muted:#5A6B82;
+  --c-to:#E0A800;
+  --c-un:#D9534F;
+  --c-bo:#3C8DDE;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#071629;--surface:#0D2342;--surface-2:#112B50;--line:#1F3D66;
+    --text:#E8EEF6;--muted:#9DB0C8;--green-ink:#9BD62A;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#071629;--surface:#0D2342;--surface-2:#112B50;--line:#1F3D66;
+  --text:#E8EEF6;--muted:#9DB0C8;--green-ink:#9BD62A;color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Barlow,"Segoe UI",system-ui,-apple-system,sans-serif}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+
+header.band{background:var(--navy);color:#fff;border-bottom:6px solid var(--green)}
+.band-inner{max-width:1320px;margin:0 auto;padding:18px 20px 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.band h1{margin:0;font:800 clamp(30px,4.6vw,46px)/0.95 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.01em}
+.band p{margin:4px 0 0;color:#B8C7DA;font-size:15px}
+.tally{display:flex;gap:22px}
+.tally div{text-align:right}
+.tally b{display:block;font:700 30px/1 "Barlow Condensed","Arial Narrow",sans-serif}
+.tally span{font-size:13px;color:#B8C7DA}
+
+main{max-width:1320px;margin:0 auto;padding:20px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+@media (max-width:980px){main{grid-template-columns:1fr}}
+
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.screen{position:relative;aspect-ratio:16/9;background:#000}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.screen .empty{position:absolute;inset:0;display:grid;place-items:center;color:#9DB0C8;text-align:center;padding:20px}
+.launch{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:radial-gradient(circle at 50% 40%,#1B4F8C 0,#0A2240 70%);color:#fff}
+.launch .lt{font:700 clamp(40px,8vw,72px)/1 "Barlow Condensed","Arial Narrow",sans-serif;font-variant-numeric:tabular-nums}
+.launch .ln{max-width:46ch;color:#D3DEEB;font-size:17px}
+.launch a{display:inline-block;background:var(--green);color:#0A2240;font:700 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;padding:14px 26px;border-radius:6px;text-decoration:none}
+.launch a:hover{filter:brightness(1.08)}
+.launch small{color:#9DB0C8;font-size:13px}
+
+.now{padding:16px 18px 6px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start}
+.tag{display:inline-block;padding:3px 10px;border-radius:4px;font:700 15px/1.3 "Barlow Condensed","Arial Narrow",sans-serif;color:#0A2240}
+.now h2{margin:0;font:600 21px/1.3 Barlow,system-ui,sans-serif}
+.now .meta{color:var(--muted);font-size:14px;margin-top:2px}
+.nav{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#0A2240}
+.btn[disabled]{opacity:.45;cursor:default}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:8px 18px 16px;color:var(--muted);font-size:14px}
+.controls label{display:flex;gap:6px;align-items:center}
+.controls select{font:inherit;color:var(--text);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+.controls a{color:var(--green-ink);font-weight:600;text-decoration:none;margin-left:auto}
+.controls a:hover{text-decoration:underline}
+.check{display:flex;gap:6px;align-items:center;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--green)}
+
+/* Game map */
+.map{border-top:1px solid var(--line);padding:14px 18px 18px;background:var(--surface-2)}
+.map-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:12px;flex-wrap:wrap}
+.map-head h3{margin:0;font:700 19px/1 "Barlow Condensed","Arial Narrow",sans-serif}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.track{position:relative;height:74px}
+.lane{position:absolute;left:0;right:0;height:18px;border-radius:3px;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),var(--line) calc(10% - 1px) 10%)}
+.lane:nth-child(1){top:0}.lane:nth-child(2){top:24px}.lane:nth-child(3){top:48px}
+.pip{position:absolute;top:1px;width:8px;height:16px;margin-left:-4px;border-radius:2px;border:0;padding:0;cursor:pointer}
+.pip.done{opacity:.4}
+.pip.on{outline:2px solid var(--text);outline-offset:2px;opacity:1}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
+
+/* Side list */
+aside{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}
+@media (max-width:980px){aside{position:static}}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.tab{border:0;background:transparent;padding:12px 6px 10px;cursor:pointer;border-bottom:4px solid transparent;text-align:center}
+.tab b{display:block;font:700 22px/1 "Barlow Condensed","Arial Narrow",sans-serif}
+.tab span{font-size:12.5px;color:var(--muted);line-height:1.2;display:block;margin-top:3px}
+.tab[aria-selected="true"]{border-bottom-color:var(--accent,var(--green));background:var(--surface-2)}
+.list{list-style:none;margin:0;padding:6px;max-height:min(68vh,760px);overflow-y:auto}
+@media (max-width:980px){.list{max-height:none}}
+.item{display:grid;grid-template-columns:6px 58px 1fr 20px;gap:10px;align-items:start;width:100%;text-align:left;border:0;background:transparent;padding:10px 8px;border-radius:6px;cursor:pointer}
+.item:hover{background:var(--surface-2)}
+.item.on{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
+.item .bar{align-self:stretch;border-radius:3px}
+.item .t{font:700 17px/1.25 "Barlow Condensed","Arial Narrow",sans-serif;font-variant-numeric:tabular-nums}
+.item .n{font-size:14.5px;line-height:1.4}
+.item .k{font-size:12.5px;color:var(--muted)}
+.item .d{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);margin-top:2px}
+.item.done .d{background:var(--green);border-color:var(--green)}
+.item.done .n{color:var(--muted)}
+.foot{padding:10px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}
+.foot button{border:0;background:none;color:var(--green-ink);font-weight:600;cursor:pointer;padding:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="band-inner">
+    <div>
+      <h1>Grizzlies film study</h1>
+      <p>Game review clips, grouped by what we need to fix</p>
+    </div>
+    <div class="tally" id="tally"></div>
+  </div>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="screen" id="screen">
+      <div class="empty">Pick a clip to start.</div>
+    </div>
+    <div class="now">
+      <span class="tag" id="nowTag"></span>
+      <div>
+        <h2 id="nowNote">—</h2>
+        <div class="meta" id="nowMeta"></div>
+      </div>
+      <div class="nav">
+        <button class="btn" id="prev" aria-label="Previous clip">Previous</button>
+        <button class="btn primary" id="next" aria-label="Next clip">Next</button>
+      </div>
+    </div>
+    <div class="controls">
+      <label>Start
+        <select id="lead">
+          <option value="0">right at the play</option>
+          <option value="5" selected>5 sec early</option>
+          <option value="10">10 sec early</option>
+          <option value="15">15 sec early</option>
+        </select>
+      </label>
+      <label>Player
+        <select id="mode">
+          <option value="launch">Open clips in YouTube</option>
+          <option value="embed">Play inside this page</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="doneBox"> Reviewed</label>
+      <a id="ytLink" href="#" target="_blank" rel="noopener">Open on YouTube</a>
+    </div>
+    <div class="map">
+      <div class="map-head">
+        <h3>Where it happened in the game</h3>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="track" id="track"><div class="lane"></div><div class="lane"></div><div class="lane"></div></div>
+      <div class="ticks" id="ticks"></div>
+    </div>
+  </section>
+
+  <aside>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <ul class="list" id="list"></ul>
+    <div class="foot"><span id="progress"></span><button id="reset">Clear reviewed</button></div>
+  </aside>
+</main>
+
+<script>
+const VIDEO = "RghbhpDhU9g";
+const CATS = {
+  to: {name:"Turnovers", color:"var(--c-to)"},
+  un: {name:"Uncontested shots", color:"var(--c-un)"},
+  bo: {name:"Missed boxouts", color:"var(--c-bo)"}
+};
+const RAW = {
+  to: [
+    [413,"Good play, just didn’t secure the ball"],
+    [501,"Travel?"],
+    [558,"Travel?"],
+    [643,"Too flat, not enough ball support"],
+    [774,"Not enough ball support"],
+    [820,"Good play, just didn’t secure the ball"],
+    [1074,"Good ball movement, just off target"],
+    [1275,"Not enough ball support, we need to move on the perimeter better"],
+    [1460,"Not enough ball support, improve perimeter movement, too many inside the 3pt line"],
+    [1795,"Good drive and kick, just court awareness"],
+    [1907,"Picking up our dribble"],
+    [1931,"Foul?"],
+    [2020,"Not on target"],
+    [2548,"See the ball move into scoring positions"],
+    [2809,"Just not executing our break"]
+  ],
+  un: [
+    [514,"Hung up on screens"],
+    [627,"We let the ball advance too easily to a scoring opportunity"],
+    [1501,"Over helping, wrong help assignment"],
+    [1557,"Pinned in"],
+    [2038,"Guarded it once but not the 2nd time"],
+    [2096,"Good initial defense, unfortunate luck"],
+    [2260,"We didn’t communicate this well. We cannot give this up"],
+    [2339,"We actually guarded this well, it was in the game plan"],
+    [2530,"We need to work on help and recover rotation"],
+    [2885,"Straight pass drive, straight line drive"]
+  ],
+  bo: [
+    [466,"Long shot equals long rebound"],
+    [549,"3 white jerseys"],
+    [1105,"Fight for position while the ball is in the air"]
+  ]
+};
+const CLIPS = [];
+for (const k of Object.keys(RAW)) RAW[k].forEach(([t,note],i)=>CLIPS.push({id:k+"-"+t,cat:k,t,note,n:i+1}));
+const ALL_SORTED = [...CLIPS].sort((a,b)=>a.t-b.t);
+const GAME_END = Math.ceil((Math.max(...CLIPS.map(c=>c.t))+120)/300)*300;
+
+const $ = s=>document.querySelector(s);
+const fmt = s=>{const m=Math.floor(s/60), x=String(s%60).padStart(2,"0");return m+":"+x};
+
+let done = new Set();
+try{ done = new Set(JSON.parse(localStorage.getItem("grizz-film-done")||"[]")); }catch(e){}
+const saveDone = ()=>{ try{ localStorage.setItem("grizz-film-done",JSON.stringify([...done])); }catch(e){} };
+
+let lead = 5;
+try{ const v=localStorage.getItem("grizz-film-lead"); if(v!==null){lead=+v;} }catch(e){}
+$("#lead").value = String(lead);
+
+let view = "to";       // to | un | bo | all
+let current = null;
+
+function listFor(v){ return v==="all" ? ALL_SORTED : CLIPS.filter(c=>c.cat===v); }
+
+function renderTally(){
+  const t=$("#tally"); t.textContent="";
+  for(const k of Object.keys(CATS)){
+    const d=document.createElement("div");
+    const b=document.createElement("b"); b.textContent=RAW[k].length; b.style.color=CATS[k].color;
+    const s=document.createElement("span"); s.textContent=CATS[k].name;
+    d.append(b,s); t.append(d);
+  }
+}
+
+function renderTabs(){
+  const tabs=$("#tabs"); tabs.textContent="";
+  const defs=[...Object.keys(CATS).map(k=>({k,name:CATS[k].name,count:RAW[k].length,color:CATS[k].color})),
+              {k:"all",name:"Whole game",count:CLIPS.length,color:"var(--green)"}];
+  for(const d of defs){
+    const b=document.createElement("button");
+    b.className="tab"; b.setAttribute("role","tab"); b.setAttribute("aria-selected",String(view===d.k));
+    b.style.setProperty("--accent",d.color);
+    const n=document.createElement("b"); n.textContent=d.count;
+    const s=document.createElement("span"); s.textContent=d.name;
+    b.append(n,s);
+    b.onclick=()=>{ view=d.k; renderTabs(); renderList(); };
+    tabs.append(b);
+  }
+}
+
+function renderList(){
+  const ul=$("#list"); ul.textContent="";
+  for(const c of listFor(view)){
+    const li=document.createElement("li");
+    const b=document.createElement("button");
+    b.className="item"+(current&&current.id===c.id?" on":"")+(done.has(c.id)?" done":"");
+    const bar=document.createElement("span"); bar.className="bar"; bar.style.background=CATS[c.cat].color;
+    const t=document.createElement("span"); t.className="t"; t.textContent=fmt(c.t);
+    const body=document.createElement("span");
+    const n=document.createElement("span"); n.className="n"; n.textContent=c.note; n.style.display="block";
+    body.append(n);
+    if(view==="all"){ const k=document.createElement("span"); k.className="k"; k.textContent=CATS[c.cat].name; body.append(k); }
+    const dot=document.createElement("span"); dot.className="d"; dot.setAttribute("aria-hidden","true");
+    b.append(bar,t,body,dot);
+    b.setAttribute("aria-label",`${CATS[c.cat].name} at ${fmt(c.t)}: ${c.note}`+(done.has(c.id)?" (reviewed)":""));
+    b.onclick=()=>play(c);
+    li.append(b); ul.append(li);
+  }
+  const reviewed=CLIPS.filter(c=>done.has(c.id)).length;
+  $("#progress").textContent=`${reviewed} of ${CLIPS.length} clips reviewed`;
+}
+
+function renderMap(){
+  const lanes=document.querySelectorAll("#track .lane");
+  const order=Object.keys(CATS);
+  lanes.forEach(l=>l.textContent="");
+  for(const c of CLIPS){
+    const p=document.createElement("button");
+    p.className="pip"+(done.has(c.id)?" done":"")+(current&&current.id===c.id?" on":"");
+    p.style.left=(c.t/GAME_END*100)+"%";
+    p.style.background=CATS[c.cat].color;
+    p.title=`${fmt(c.t)} ${c.note}`;
+    p.setAttribute("aria-label",`${CATS[c.cat].name} at ${fmt(c.t)}`);
+    p.onclick=()=>play(c);
+    lanes[order.indexOf(c.cat)].append(p);
+  }
+  const ticks=$("#ticks"); ticks.textContent="";
+  for(let i=0;i<=5;i++){ const s=document.createElement("span"); s.textContent=fmt(Math.round(GAME_END*i/5/60)*60); ticks.append(s); }
+  const lg=$("#legend"); lg.textContent="";
+  for(const k of order){ const s=document.createElement("span"); const i=document.createElement("i"); i.style.background=CATS[k].color; s.append(i,CATS[k].name); lg.append(s); }
+}
+
+function play(c){
+  current=c;
+  const start=Math.max(0,c.t-lead);
+  const screen=$("#screen"); screen.textContent="";
+  if(embedBlocked){ showLauncher(c,start); }
+  else {
+  const f=document.createElement("iframe");
+  f.src=`https://www.youtube.com/embed/${VIDEO}?start=${start}&autoplay=1&rel=0&playsinline=1&enablejsapi=0&origin=${encodeURIComponent(location.origin)}`;
+  f.title=`Clip at ${fmt(c.t)}`;
+  f.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";
+  f.allowFullscreen=true;
+  f.referrerPolicy="strict-origin-when-cross-origin";
+  screen.append(f);
+  }
+
+  const tag=$("#nowTag"); tag.textContent=CATS[c.cat].name; tag.style.background=CATS[c.cat].color;
+  $("#nowNote").textContent=c.note;
+  const list=listFor(view); const idx=list.findIndex(x=>x.id===c.id);
+  $("#nowMeta").textContent = `${fmt(c.t)} in the stream` + (idx>=0?`, clip ${idx+1} of ${list.length}`:"");
+  $("#ytLink").href=`https://www.youtube.com/watch?v=${VIDEO}&t=${start}s`;
+  $("#doneBox").checked=done.has(c.id);
+  $("#prev").disabled = idx<=0;
+  $("#next").disabled = idx<0 || idx>=list.length-1;
+  renderList(); renderMap();
+  const on=document.querySelector(".item.on"); if(on) on.scrollIntoView({block:"nearest"});
+}
+
+// YouTube refuses embeds (Error 153) when the page has no real web address to report:
+// opened from a local file, or inside a sandboxed host such as a Claude artifact.
+const canEmbed = location.protocol==="https:" && location.origin!=="null" && !/claude|anthropic/i.test(location.hostname);
+let embedBlocked=!canEmbed;
+try{ const m=localStorage.getItem("grizz-film-mode"); if(m) embedBlocked = (m==="launch"); }catch(e){}
+setTimeout(()=>{ const sel=$("#mode"); sel.value=embedBlocked?"launch":"embed"; sel.onchange=e=>{ embedBlocked=e.target.value==="launch"; try{localStorage.setItem("grizz-film-mode",e.target.value);}catch(_){} if(current) play(current); }; });
+function showLauncher(c,start){
+  const screen=$("#screen"); screen.textContent="";
+  const w=document.createElement("div"); w.className="launch";
+  const t=document.createElement("div"); t.className="lt"; t.textContent=fmt(c.t);
+  const n=document.createElement("div"); n.className="ln"; n.textContent=c.note;
+  const a=document.createElement("a"); a.href=`https://www.youtube.com/watch?v=${VIDEO}&t=${start}s`; a.target="_blank"; a.rel="noopener"; a.textContent="Play this clip on YouTube";
+  const s=document.createElement("small"); s.textContent="Opens in a new tab at the right moment. Come back here and press Next for the following clip.";
+  w.append(t,n,a,s); screen.append(w);
+}
+document.addEventListener("securitypolicyviolation",e=>{
+  if(/youtube/i.test(e.blockedURI||"") && !embedBlocked){
+    embedBlocked=true;
+    if(current) showLauncher(current,Math.max(0,current.t-lead));
+  }
+});
+
+function step(d){
+  const list=listFor(view);
+  if(!current){ if(list.length) play(list[0]); return; }
+  let idx=list.findIndex(x=>x.id===current.id);
+  if(idx<0){ play(list[0]); return; }
+  const n=list[idx+d]; if(n) play(n);
+}
+
+$("#prev").onclick=()=>step(-1);
+$("#next").onclick=()=>{ if(current){done.add(current.id); saveDone();} step(1); };
+$("#doneBox").onchange=e=>{ if(!current) return; e.target.checked?done.add(current.id):done.delete(current.id); saveDone(); renderList(); renderMap(); };
+$("#lead").onchange=e=>{ lead=+e.target.value; try{localStorage.setItem("grizz-film-lead",String(lead));}catch(_){} if(current) play(current); };
+$("#reset").onclick=()=>{ done.clear(); saveDone(); $("#doneBox").checked=false; renderList(); renderMap(); };
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("select,input")) return;
+  if(e.key==="ArrowRight"||e.key==="k"){ e.preventDefault(); $("#next").click(); }
+  if(e.key==="ArrowLeft"||e.key==="j"){ e.preventDefault(); step(-1); }
+});
+
+renderTally(); renderTabs(); renderList(); renderMap();
+const first=listFor(view)[0];
+$("#nowTag").textContent=CATS.to.name; $("#nowTag").style.background=CATS.to.color;
+$("#nowNote").textContent="Choose a clip from the list or the game map";
+$("#nowMeta").textContent=`${CLIPS.length} clips across ${Object.keys(CATS).length} focus areas`;
+$("#ytLink").href=`https://www.youtube.com/watch?v=${VIDEO}`;
+</script>
+</body>
+</html>
